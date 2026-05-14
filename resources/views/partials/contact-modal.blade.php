@@ -77,7 +77,7 @@
 
                 <label class="contact-field contact-field-message">
                     <span>Message</span>
-                    <textarea name="contact_message" rows="4" placeholder="Tell us about your project or support need">{{ old('contact_message') }}</textarea>
+                    <textarea name="contact_message" rows="3" placeholder="Tell us about your project or support need">{{ old('contact_message') }}</textarea>
                     @error('contact_message', 'contact')
                         <span class="contact-field-error">{{ $message }}</span>
                     @enderror

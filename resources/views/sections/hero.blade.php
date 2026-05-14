@@ -16,7 +16,7 @@
                 <div class="intro-card-shell">
                     <span class="intro-card-orbit intro-card-orbit-1"></span>
                     <span class="intro-card-orbit intro-card-orbit-2"></span>
-                    <span class="intro-card-icon icon-inline"><x-icon name="team-user" /></span>
+                    <span class="intro-card-icon icon-inline"><x-icon name="computer-3d" /></span>
                 </div>
             </div>
 
@@ -24,36 +24,36 @@
 
             <div class="art-card art-card-device">
                 <div class="device-surface">
-                    <div class="device-icon icon-inline"><x-icon name="shield" /></div>
+                    <div class="device-icon icon-inline"><x-icon name="shield-check" /></div>
                 </div>
             </div>
 
             <div class="art-card art-card-profile">
-                <div class="profile-metric">
-                    <strong>68K+</strong>
-                    <span>28% &uarr;</span>
+                <div class="profile-card-shell">
+                    <span class="profile-card-icon icon-inline"><x-icon name="browser-layout" /></span>
                 </div>
-                <div class="profile-silhouette"></div>
             </div>
 
             <div class="mini-chip mini-chip-gold">
-                <span class="icon-inline"><x-icon name="spark" /></span>
+                <span class="icon-inline"><x-icon name="browser-layout" /></span>
             </div>
 
             <div class="art-connector art-connector-bottom"></div>
 
             <div class="art-card art-card-chip">
                 <div class="chip-graphic">
-                    <div class="chip-core"></div>
+                    <div class="chip-core">
+                        <span class="chip-core-icon icon-inline"><x-icon name="monitor-code" /></span>
+                    </div>
                 </div>
             </div>
 
             <div class="mini-chip mini-chip-dark">
-                <span class="icon-inline"><x-icon name="workflow" /></span>
+                <span class="icon-inline"><x-icon name="network-nodes" /></span>
             </div>
 
             <div class="mini-chip mini-chip-accent">
-                <span class="icon-inline"><x-icon name="analytics" /></span>
+                <span class="icon-inline"><x-icon name="api-merge" /></span>
             </div>
         </div>
 

@@ -40,7 +40,7 @@
 @endphp
 <body
     @if ($openModal) data-open-modal="{{ $openModal }}" @endif
-    data-auth-mode="{{ $authMode }}"
+    data-auth-initial-mode="{{ $authMode }}"
 >
     <div class="site-shell">
         @include('partials.header')

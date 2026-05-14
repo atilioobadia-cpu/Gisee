@@ -24,6 +24,24 @@
             </h2>
         </div>
 
+        <div class="auth-mode-switch" role="tablist" aria-label="Login or register">
+            <button
+                class="auth-form-tab{{ $isSignup ? '' : ' is-active' }}"
+                type="button"
+                role="tab"
+                data-auth-mode="signin"
+                aria-selected="{{ $isSignup ? 'false' : 'true' }}"
+            >Login</button>
+            <button
+                class="auth-form-tab{{ $isSignup ? ' is-active' : '' }}"
+                type="button"
+                role="tab"
+                data-auth-mode="signup"
+                aria-selected="{{ $isSignup ? 'true' : 'false' }}"
+            >Register</button>
+        </div>
+
+        <div class="auth-panels" data-auth-panels>
         <form
             class="auth-form-panel {{ $isSignup ? '' : 'is-active' }}"
             data-auth-panel="signin"
@@ -121,16 +139,6 @@
 
             <button class="auth-submit auth-submit-primary" type="submit">Sign Up</button>
         </form>
-
-        <div class="auth-card-foot">
-            <p class="auth-switch auth-switch-signin">
-                Don't have an account?
-                <button type="button" class="auth-switch-link" data-auth-mode="signup">Sign up</button>
-            </p>
-            <p class="auth-switch auth-switch-signup">
-                Already have an account?
-                <button type="button" class="auth-switch-link" data-auth-mode="signin">Log in</button>
-            </p>
         </div>
     </div>
 </section>

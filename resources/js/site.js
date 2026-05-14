@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const authSection = document.querySelector('.auth-section');
     const authStage = document.querySelector('[data-auth-stage]');
     const authOpeners = document.querySelectorAll('[data-auth-open]');
-    const authModeButtons = document.querySelectorAll('[data-auth-mode]');
+    const authModeButtons = document.querySelectorAll('.auth-form-tab[data-auth-mode]');
     const authPanels = document.querySelectorAll('[data-auth-panel]');
     const authForms = document.querySelectorAll('.auth-form-panel');
     const authClosers = document.querySelectorAll('[data-auth-close]');
@@ -400,6 +400,144 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /* ---------------------------------------------------------------
+       Client-side form validation
+       Blocks empty or malformed submits before they reach Laravel and
+       keeps the submit button disabled until the required fields are
+       filled. The server-side Form Requests remain the source of truth.
+       --------------------------------------------------------------- */
+    const validationConfigs = {
+        contact: {
+            wrapSelector: '.contact-field',
+            errorClass: 'contact-field-error',
+            rules: [
+                { name: 'contact_name', label: 'Name', email: false, min: 0 },
+                { name: 'contact_email', label: 'E-mail address', email: true, min: 0 },
+                { name: 'contact_message', label: 'Message', email: false, min: 10 }
+            ]
+        },
+        signin: {
+            wrapSelector: '.auth-field',
+            errorClass: 'auth-field-error',
+            rules: [
+                { name: 'signin_email', label: 'Email', email: true, min: 0 },
+                { name: 'signin_password', label: 'Password', email: false, min: 0 }
+            ]
+        },
+        signup: {
+            wrapSelector: '.auth-field',
+            errorClass: 'auth-field-error',
+            rules: [
+                { name: 'signup_name', label: 'Name', email: false, min: 0 },
+                { name: 'signup_email', label: 'Email', email: true, min: 0 },
+                { name: 'signup_password', label: 'Password', email: false, min: 8 }
+            ]
+        }
+    };
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const clearFieldError = function (input, config) {
+        const wrap = input.closest(config.wrapSelector);
+        if (!wrap) {
+            return;
+        }
+        wrap.classList.remove('has-error');
+        const existing = wrap.querySelector('.' + config.errorClass);
+        if (existing) {
+            existing.remove();
+        }
+    };
+
+    const showFieldError = function (input, config, message) {
+        const wrap = input.closest(config.wrapSelector);
+        if (!wrap) {
+            return;
+        }
+        clearFieldError(input, config);
+        wrap.classList.add('has-error');
+        const span = document.createElement('span');
+        span.className = config.errorClass;
+        span.textContent = message;
+        wrap.appendChild(span);
+    };
+
+    const checkRule = function (form, config, rule) {
+        const input = form.querySelector('[name="' + rule.name + '"]');
+        if (!input) {
+            return true;
+        }
+        const value = (input.value || '').trim();
+
+        if (!value) {
+            showFieldError(input, config, rule.label + ' is required.');
+            return false;
+        }
+        if (rule.email && !emailPattern.test(value)) {
+            showFieldError(input, config, 'Enter a valid e-mail address.');
+            return false;
+        }
+        if (rule.min && value.length < rule.min) {
+            showFieldError(input, config, rule.label + ' must be at least ' + rule.min + ' characters.');
+            return false;
+        }
+        clearFieldError(input, config);
+        return true;
+    };
+
+    const allRequiredFilled = function (form, config) {
+        return config.rules.every(function (rule) {
+            const input = form.querySelector('[name="' + rule.name + '"]');
+            return input && (input.value || '').trim() !== '';
+        });
+    };
+
+    const setupFormValidation = function (form, config) {
+        if (!form || !config) {
+            return null;
+        }
+
+        const submitButton = form.querySelector('[type="submit"]');
+
+        const refreshSubmitState = function () {
+            if (submitButton) {
+                submitButton.disabled = !allRequiredFilled(form, config);
+            }
+        };
+
+        config.rules.forEach(function (rule) {
+            const input = form.querySelector('[name="' + rule.name + '"]');
+            if (!input) {
+                return;
+            }
+            input.addEventListener('input', function () {
+                clearFieldError(input, config);
+                refreshSubmitState();
+            });
+            input.addEventListener('blur', function () {
+                if ((input.value || '').trim()) {
+                    checkRule(form, config, rule);
+                }
+            });
+        });
+
+        refreshSubmitState();
+
+        return function validate() {
+            let firstInvalid = null;
+            config.rules.forEach(function (rule) {
+                if (!checkRule(form, config, rule) && !firstInvalid) {
+                    firstInvalid = form.querySelector('[name="' + rule.name + '"]');
+                }
+            });
+            if (firstInvalid) {
+                firstInvalid.focus();
+                return false;
+            }
+            return true;
+        };
+    };
+
     if (contactSection) {
         const openContact = function (opener) {
             closeAuth({ immediate: true });
@@ -427,7 +565,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         contactForms.forEach(function (form) {
-            form.addEventListener('submit', function () {
+            const validate = setupFormValidation(form, validationConfigs.contact);
+            form.addEventListener('submit', function (event) {
+                if (validate && !validate()) {
+                    event.preventDefault();
+                    showToast('Please fill in the required fields.', 'error');
+                    return;
+                }
                 // Native submit posts to the Laravel ContactController.
                 // Surface immediate feedback while the request is in flight.
                 showToast('Sending your message…', 'info');
@@ -436,7 +580,30 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (authStage && authModeButtons.length && authPanels.length) {
+        const authPanelsWrap = authStage.querySelector('[data-auth-panels]');
+
+        const findPanel = function (mode) {
+            for (let i = 0; i < authPanels.length; i += 1) {
+                if (authPanels[i].dataset.authPanel === mode) {
+                    return authPanels[i];
+                }
+            }
+            return null;
+        };
+
         const setAuthMode = function (mode) {
+            const targetPanel = findPanel(mode);
+            if (!targetPanel) {
+                return;
+            }
+
+            // Slide direction: Register (right tab) enters from the right,
+            // Login (left tab) enters from the left.
+            const previousMode = authStage.getAttribute('data-auth-state');
+            if (previousMode && previousMode !== mode) {
+                authStage.setAttribute('data-auth-direction', mode === 'signup' ? 'forward' : 'back');
+            }
+
             authStage.setAttribute('data-auth-state', mode);
 
             authModeButtons.forEach(function (button) {
@@ -448,10 +615,17 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             authPanels.forEach(function (panel) {
-                const isActive = panel.dataset.authPanel === mode;
+                const isActive = panel === targetPanel;
                 panel.classList.toggle('is-active', isActive);
+                panel.classList.remove('is-leaving');
+                panel.style.position = '';
                 panel.hidden = !isActive;
             });
+
+            if (authPanelsWrap) {
+                authPanelsWrap.classList.remove('is-switching');
+                authPanelsWrap.style.height = '';
+            }
         };
 
         const openAuth = function (mode, opener) {
@@ -462,7 +636,8 @@ document.addEventListener('DOMContentLoaded', function () {
             closeContact({ immediate: true });
 
             if (mode) {
-                setAuthMode(mode);
+                // No panel animation while the modal itself is animating open.
+                setAuthMode(mode, { immediate: true });
             }
 
             showModal(authSection, authStage, 'auth-open', opener);
@@ -499,7 +674,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         authForms.forEach(function (form) {
-            form.addEventListener('submit', function () {
+            const validate = setupFormValidation(form, validationConfigs[form.dataset.authPanel]);
+            form.addEventListener('submit', function (event) {
+                if (validate && !validate()) {
+                    event.preventDefault();
+                    showToast('Please fill in the required fields.', 'error');
+                    return;
+                }
                 // Native submit posts to the Laravel auth controllers.
                 showToast('Please wait…', 'info');
             });
@@ -538,7 +719,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // validation errors or a status flash (set via <body data-open-modal>).
         const requestedModal = body.dataset.openModal;
         if (requestedModal === 'auth') {
-            openAuth(body.dataset.authMode || 'signin', null);
+            openAuth(body.dataset.authInitialMode || 'signin', null);
         } else if (requestedModal === 'contact') {
             openContact(null);
         }

@@ -6,13 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Register a new account from the homepage sign-up modal and log it in.
+     * Register a new account from the homepage sign-up modal.
      */
     public function store(RegisterRequest $request): RedirectResponse
     {
@@ -22,13 +21,11 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->validated('signup_password')),
         ]);
 
-        Auth::login($user);
-
-        $request->session()->regenerate();
-
         return redirect()
-            ->intended(route('home'))
-            ->with('toast', 'Welcome to Gisee, '.$user->name.'. Your account is ready.')
+            ->route('home')
+            ->with('open_modal', 'auth')
+            ->with('auth_mode', 'signin')
+            ->with('toast', 'Account created for '.$user->name.'. Please log in to continue.')
             ->with('toast_type', 'success');
     }
 }

@@ -958,9 +958,9 @@ $footerSocialLinks = [
                     </div>
 
                     <div class="footer-contact-panel">
-                        <a class="footer-contact-item" href="mailto:atilioobadia@gmail.com">
+                        <a class="footer-contact-item" href="mailto:info@gisee.co.tz">
                             <span class="icon-inline"><?= siteIcon('mail') ?></span>
-                            <span>atilioobadia@gmail.com</span>
+                            <span>info@gisee.co.tz</span>
                         </a>
                         <a class="footer-contact-item" href="tel:+255773500811">
                             <span class="icon-inline"><?= siteIcon('mobile') ?></span>

@@ -234,21 +234,6 @@ img {
 .dropdown-column a:hover {
     color: var(--brand-ink);
 }
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    min-height: 3.1rem;
-    border-radius: var(--radius-pill);
-    font-size: 0.95rem;
-    font-weight: 700;
-    transition:
-        transform 0.25s ease,
-        color 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease;
-}
 
 .nav-links a {
     padding: 0 1.25rem;
@@ -846,7 +831,7 @@ body.nav-open .mobile-menu-toggle span:nth-child(3) {
     z-index: -2;
     background:
         linear-gradient(90deg, rgba(3, 15, 15, 0.97) 0%, rgba(4, 19, 18, 0.94) 48%, rgba(3, 18, 18, 0.72) 72%, rgba(3, 15, 15, 0.86) 100%),
-        url("../../images/transformation-reference.png") 82% center/cover no-repeat;
+        url("/images/transformation-reference.png") 82% center/cover no-repeat;
 }
 
 .transform-card::after {
@@ -1330,7 +1315,7 @@ body.js-animate [data-reveal].is-visible {
     .transform-card::before {
         background:
             linear-gradient(180deg, rgba(3, 15, 15, 0.95) 0%, rgba(3, 15, 15, 0.92) 44%, rgba(3, 15, 15, 0.82) 100%),
-            url("../../images/transformation-reference.png") 76% center/cover no-repeat;
+            url("/images/transformation-reference.png") 76% center/cover no-repeat;
     }
 }
 
@@ -5198,5 +5183,215 @@ body.modal-open .whatsapp-bubble {
     .mobile-menu-toggle {
         width: 2.8rem !important;
         height: 2.8rem !important;
+    }
+}
+
+/* ==========================================================================
+   Laravel migration additions
+   Validation feedback + auth controls wired to the Laravel back end.
+   Kept minimal and responsive so it blends with the existing design system.
+   ========================================================================== */
+
+.auth-field-error,
+.contact-field-error {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: #d6453d;
+}
+
+.auth-remember {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: -0.2rem 0 0.2rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(17, 17, 17, 0.7);
+    cursor: pointer;
+}
+
+.auth-remember input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: #111;
+    cursor: pointer;
+}
+
+/* Logout reuses the hero "inline-link" / footer-action styling, but a POST
+   form would otherwise add layout box. Keep the form transparent. */
+.inline-link-form {
+    margin: 0;
+    padding: 0;
+    display: inline-flex;
+}
+
+.inline-link-form .inline-link {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font: inherit;
+}
+
+.simple-footer-actions form {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .auth-field-error,
+    .contact-field-error {
+        font-size: 0.74rem;
+    }
+}
+
+/* ==========================================================================
+   Mobile responsiveness & reactivity enhancements
+   Additive layer placed last so it complements the existing breakpoints
+   (1180 / 1100 / 1040 / 980 / 900 / 820 / 760 / 640 / 600) instead of
+   rewriting the tuned design. Focus: touch reactivity, stable viewport
+   height, safe-area insets, overflow safety, and small-phone polish.
+   ========================================================================== */
+
+/* --- Global touch & rendering polish --- */
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
+
+/* Progressive enhancement: use the dynamic viewport unit where supported so
+   the layout no longer jumps as mobile browser chrome shows/hides. Browsers
+   without `dvh` keep the `100vh` rule declared earlier in the file. */
+body {
+    min-height: 100dvh;
+}
+
+/* Belt-and-suspenders guard against a stray child causing sideways scroll.
+   `clip` (unlike `hidden`) does not create a scroll container, so the sticky
+   header keeps working. */
+.site-shell {
+    overflow-x: clip;
+}
+
+/* --- Snappy press feedback for touch users ("reactive" feel) --- */
+@media (hover: none) and (pointer: coarse) {
+    .cta-pill:active,
+    .inline-link:active,
+    .header-contact-pill:active,
+    .footer-action:active,
+    .auth-submit:active,
+    .contact-submit:active,
+    .services-mode-tab:active,
+    .auth-switch-link:active,
+    .footer-social:active {
+        transform: scale(0.96);
+        transition: transform 0.08s ease;
+    }
+
+    /* Comfortable, thumb-friendly tap targets. */
+    .footer-action,
+    .auth-switch-link,
+    .auth-show-toggle,
+    .auth-quiet-link {
+        min-height: 44px;
+    }
+
+    .simple-footer-links a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+    }
+}
+
+/* --- Safe-area insets for notched / gesture-bar phones --- */
+@media (max-width: 820px) {
+    .whatsapp-bubble {
+        right: max(1.1rem, env(safe-area-inset-right));
+        bottom: max(1.1rem, env(safe-area-inset-bottom));
+    }
+}
+
+/* --- Small phones: <= 560px --- */
+@media (max-width: 560px) {
+    .content-section {
+        scroll-margin-top: 6rem;
+    }
+
+    /* Stack the hero call-to-actions full width so they are easy to tap. */
+    .hero-actions-compact {
+        width: 100%;
+    }
+
+    .hero-actions-compact .cta-pill,
+    .hero-actions-compact .inline-link,
+    .hero-actions-compact .inline-link-form,
+    .hero-actions-compact .inline-link-form .inline-link {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Stack contact form buttons rather than squeezing them side by side. */
+    .contact-form-actions {
+        flex-direction: column;
+    }
+
+    .contact-form-actions .contact-submit {
+        width: 100%;
+    }
+
+    .whatsapp-bubble {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    /* Calmer, lighter motion on small screens (battery + perceived speed). */
+    .whatsapp-bubble {
+        animation: whatsappFloat 4.6s ease-in-out infinite;
+    }
+}
+
+/* --- Very small phones: <= 380px --- */
+@media (max-width: 380px) {
+    .hero-summary-main h1 {
+        font-size: clamp(2.15rem, 11.5vw, 2.85rem);
+    }
+
+    .topbar {
+        padding-left: 0.7rem !important;
+        padding-right: 0.7rem !important;
+    }
+
+    .logo-image {
+        width: 92px !important;
+    }
+
+    .auth-section,
+    .contact-modal {
+        padding: 0.6rem;
+    }
+}
+
+/* --- Landscape phones: keep modals usable when height is tight --- */
+@media (max-height: 480px) and (orientation: landscape) {
+    .auth-stage,
+    .contact-modal-stage {
+        max-height: calc(100dvh - 1rem);
+    }
+
+    .whatsapp-bubble {
+        width: 3.1rem;
+        height: 3.1rem;
     }
 }

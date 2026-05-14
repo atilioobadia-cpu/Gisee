@@ -346,15 +346,15 @@ img {
     height: 0.92rem;
 }
 
+/* Primary CTA pills ("Get In Touch", "Discuss your build") now share the same
+   light, glassy treatment as the rest of the site's pill buttons — light
+   surface, ink text, and a dark circular icon badge — instead of the old
+   dark-slab look. The badge intentionally has no override here so it inherits
+   the default dark `.contact-pill-badge` style. */
 .cta-primary {
-    color: var(--brand-ivory);
-    border-color: rgba(13, 12, 10, 0.08);
-    background: linear-gradient(135deg, rgba(29, 26, 23, 0.98), rgba(71, 64, 56, 0.98));
-}
-
-.cta-primary .contact-pill-badge {
-    background: linear-gradient(135deg, #f2efe9, #cbc2b6);
     color: var(--brand-ink);
+    border-color: rgba(125, 116, 107, 0.22);
+    background: rgba(240, 249, 247, 0.78);
 }
 
 .cta-secondary {

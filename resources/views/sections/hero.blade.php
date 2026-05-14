@@ -60,11 +60,14 @@
         <div class="hero-summary-main">
             <h1>
                 <span>Future Through</span>
-                <span>Cutting-Edge</span>
-                <span>Assets.</span>
+                <span><strong>General IT</strong> &amp; <strong>Software Dev</strong></span>
+                <span class="typed-line">
+                    <span class="typed-word" data-words='["Cloud Platforms","Web Apps","SaaS Systems","Cybersecurity","AI Solutions"]'></span>
+                    <span class="typed-caret"></span>
+                </span>
             </h1>
             <p class="hero-text">
-                By empowering users with greater control over their data, identity, and assets.
+                We build polished IT products, secure software platforms, and customer-first digital systems that convert and retain.
             </p>
 
             <div class="hero-actions hero-actions-compact">

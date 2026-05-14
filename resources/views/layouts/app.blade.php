@@ -64,7 +64,7 @@
             aria-label="Chat with us on WhatsApp at {{ config('site.contact.phone') }}"
             title="WhatsApp us"
         >
-            <img src="{{ asset('images/whatsapp-icon.svg') }}" alt="WhatsApp chat" class="whatsapp-bubble-icon">
+            <span class="whatsapp-bubble-icon icon-inline" aria-hidden="true"><x-icon name="whatsapp" /></span>
         </a>
     </div>
 

@@ -76,21 +76,6 @@ return [
                 ],
             ],
         ],
-        [
-            'label' => 'Portfolio',
-            'href' => '#portfolio',
-            'icon' => true,
-            'submenu' => [
-                [
-                    'group' => 'Highlights',
-                    'items' => [
-                        ['label' => 'Web Platforms', 'href' => '#portfolio'],
-                        ['label' => 'Apps & Integrations', 'href' => '#portfolio'],
-                        ['label' => 'Digital Launches', 'href' => '#portfolio'],
-                    ],
-                ],
-            ],
-        ],
         ['label' => 'About Us', 'href' => '#about', 'icon' => true],
         ['label' => 'Shop', 'href' => '#shop', 'icon' => false],
     ],

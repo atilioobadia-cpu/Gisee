@@ -12,6 +12,12 @@
                     </a>
                 </div>
             @endforeach
+
+            <div class="nav-item nav-item-mobile-contact">
+                <button class="nav-link nav-link-button nav-link-mobile-contact" type="button" data-contact-open>
+                    <span>Contact us</span>
+                </button>
+            </div>
         </nav>
     </div>
 

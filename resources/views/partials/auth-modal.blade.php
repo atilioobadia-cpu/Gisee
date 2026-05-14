@@ -19,8 +19,8 @@
                 <img src="{{ asset('images/giseepng.png') }}" alt="Gisee" width="110" height="32">
             </span>
             <h2 id="auth-title" class="auth-card-title">
-                <span class="auth-title-signin">Log in to Gisee</span>
-                <span class="auth-title-signup">Create your account</span>
+                <span class="auth-title-signin">Login to Gisee</span>
+                <span class="auth-title-signup">Create a Gisee account</span>
             </h2>
         </div>
 
@@ -62,21 +62,18 @@
                 @enderror
             </label>
 
-            <label class="auth-remember">
-                <input type="checkbox" name="remember" value="1">
-                <span>Remember me</span>
-            </label>
+            <div class="auth-form-meta">
+                <label class="auth-remember">
+                    <input type="checkbox" name="remember" value="1">
+                    <span>Remember me</span>
+                </label>
 
-            <button class="auth-quiet-link auth-forgot" type="button" data-contact-open>
-                Forgot password?
-            </button>
+                <button class="auth-quiet-link auth-forgot" type="button" data-contact-open>
+                    Forgot password?
+                </button>
+            </div>
 
             <button class="auth-submit auth-submit-primary" type="submit">Login</button>
-
-            <p class="auth-switch">
-                Don't have an account?
-                <button type="button" class="auth-switch-link" data-auth-mode="signup">Sign up</button>
-            </p>
         </form>
 
         <form
@@ -123,11 +120,17 @@
             </label>
 
             <button class="auth-submit auth-submit-primary" type="submit">Sign Up</button>
-
-            <p class="auth-switch">
-                Already have an account?
-                <button type="button" class="auth-switch-link" data-auth-mode="signin">Sign in</button>
-            </p>
         </form>
+
+        <div class="auth-card-foot">
+            <p class="auth-switch auth-switch-signin">
+                Don't have an account?
+                <button type="button" class="auth-switch-link" data-auth-mode="signup">Sign up</button>
+            </p>
+            <p class="auth-switch auth-switch-signup">
+                Already have an account?
+                <button type="button" class="auth-switch-link" data-auth-mode="signin">Log in</button>
+            </p>
+        </div>
     </div>
 </section>

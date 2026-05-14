@@ -50,7 +50,7 @@
                     aria-label="WhatsApp {{ config('site.contact.phone') }}"
                     title="WhatsApp {{ config('site.contact.phone') }}"
                 >
-                    <img src="{{ asset('images/whatsapp-icon.svg') }}" alt="WhatsApp" class="footer-whatsapp-icon">
+                    <span class="footer-whatsapp-icon icon-inline" aria-hidden="true"><x-icon name="whatsapp" /></span>
                 </a>
             </div>
 

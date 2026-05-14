@@ -10,10 +10,29 @@ document.body.classList.add('js-animate');
 document.addEventListener('DOMContentLoaded', function () {
     const body = document.body;
     const topbar = document.querySelector('.topbar');
+    const navPanel = document.querySelector('.nav-panel');
     const toggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelectorAll('.nav-links a, .brand, .cta-pill, .inline-link, .header-contact-pill');
+    const navActionButtons = document.querySelectorAll('.nav-links button');
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
     const dropdownGroups = document.querySelectorAll('.nav-item-has-menu');
+    const setNavState = function (isOpen) {
+        body.classList.toggle('nav-open', isOpen);
+
+        if (toggle) {
+            toggle.setAttribute('aria-expanded', String(isOpen));
+            toggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+        }
+    };
+    const updateMobileNavOffset = function () {
+        if (!topbar) {
+            return;
+        }
+
+        const rect = topbar.getBoundingClientRect();
+        const nextOffset = Math.max(72, Math.round(rect.bottom + 10));
+        document.documentElement.style.setProperty('--mobile-nav-offset', nextOffset + 'px');
+    };
     const closeAllDropdowns = function () {
         dropdownGroups.forEach(function (group) {
             const toggleButton = group.querySelector('.dropdown-toggle');
@@ -251,12 +270,38 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    updateMobileNavOffset();
+
+    window.addEventListener('resize', function () {
+        updateMobileNavOffset();
+
+        if (window.innerWidth > 820 && body.classList.contains('nav-open')) {
+            setNavState(false);
+        }
+    });
+
+    window.addEventListener('scroll', updateMobileNavOffset, {
+        passive: true,
+    });
+
     if (toggle) {
         toggle.addEventListener('click', function () {
-            const isOpen = body.classList.toggle('nav-open');
-            toggle.setAttribute('aria-expanded', String(isOpen));
+            updateMobileNavOffset();
+            setNavState(!body.classList.contains('nav-open'));
         });
     }
+
+    document.addEventListener('click', function (event) {
+        if (!body.classList.contains('nav-open')) {
+            return;
+        }
+
+        if (event.target.closest('.topbar') || (navPanel && event.target.closest('.nav-panel'))) {
+            return;
+        }
+
+        setNavState(false);
+    });
 
     const scrollToTarget = function (target) {
         const topbarHeight = topbar ? topbar.getBoundingClientRect().height + 18 : 0;
@@ -287,9 +332,16 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault();
             scrollToTarget(target);
 
-            if (body.classList.contains('nav-open') && toggle) {
-                body.classList.remove('nav-open');
-                toggle.setAttribute('aria-expanded', 'false');
+            if (body.classList.contains('nav-open')) {
+                setNavState(false);
+            }
+        });
+    });
+
+    navActionButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            if (body.classList.contains('nav-open')) {
+                setNavState(false);
             }
         });
     });
@@ -361,6 +413,9 @@ document.addEventListener('DOMContentLoaded', function () {
         contactOpeners.forEach(function (button) {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
+                if (body.classList.contains('nav-open')) {
+                    setNavState(false);
+                }
                 openContact(button);
             });
         });
@@ -466,6 +521,10 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && body.classList.contains('nav-open')) {
+                setNavState(false);
+            }
+
             if (event.key === 'Escape' && body.classList.contains('auth-open')) {
                 closeAuth();
             }

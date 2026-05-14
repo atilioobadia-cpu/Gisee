@@ -2587,6 +2587,16 @@ body.nav-open .mobile-menu-toggle span:nth-child(3) {
     }
 }
 
+@keyframes artFloatSoft {
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, -5px, 0);
+    }
+}
+
 @media (max-width: 1180px) {
     .hero-summary-main h1 {
         max-width: 8.4ch;
@@ -4059,31 +4069,76 @@ html {
 
     .hero-showcase {
         gap: 0.35rem;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "summary"
+            "stats";
+        justify-items: center;
     }
 
     .hero-artboard {
-        width: 13.2rem;
-        min-height: 20.3rem;
-        transform: scale(0.74);
-        transform-origin: top center;
-        margin-bottom: -4.8rem;
+        display: none !important;
     }
 
     .hero-summary-main {
-        max-width: 16.6rem;
+        max-width: 21rem;
+        text-align: center;
+        padding-top: 0.4rem;
     }
 
     .hero-summary-main h1 {
-        max-width: 6.5ch;
-        font-size: clamp(1.82rem, 8.8vw, 2.6rem);
-        line-height: 0.96;
+        position: relative;
+        max-width: 14ch;
+        margin-inline: auto;
+        font-size: clamp(2.6rem, 11.5vw, 3.6rem);
+        line-height: 1;
+        letter-spacing: -0.055em;
+        font-weight: 700;
+    }
+
+    .hero-summary-main h1 > span {
+        display: block;
+    }
+
+    .hero-summary-main h1 > span:nth-child(1) {
+        font-style: italic;
+        font-weight: 500;
+        color: rgba(13, 12, 10, 0.66);
+        letter-spacing: -0.035em;
+    }
+
+    .hero-summary-main h1 > span:nth-child(2) {
+        background: linear-gradient(135deg, #12100e 0%, #4a433b 55%, #8a7e72 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .hero-summary-main h1 > span:nth-child(3) {
+        position: relative;
+        display: inline-block;
+        padding-inline: 0.18em;
+    }
+
+    .hero-summary-main h1 > span:nth-child(3)::after {
+        content: "";
+        position: absolute;
+        left: 0.05em;
+        right: 0.05em;
+        bottom: 0.08em;
+        height: 0.36em;
+        z-index: -1;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(212, 204, 192, 0.85), rgba(159, 142, 124, 0.55));
+        opacity: 0.7;
     }
 
     .hero-summary-main .hero-text {
-        max-width: 14.6rem;
-        margin-top: 0.7rem;
-        font-size: 0.76rem;
-        line-height: 1.34;
+        max-width: 18rem;
+        margin: 0.85rem auto 0;
+        font-size: 0.92rem;
+        line-height: 1.55;
+        color: rgba(13, 12, 10, 0.58);
     }
 
     .hero-actions-compact {
@@ -4091,7 +4146,7 @@ html {
         flex-wrap: nowrap;
         justify-content: center;
         gap: 0.7rem;
-        margin-top: 0.95rem;
+        margin-top: 1.1rem;
     }
 
     .hero-actions-compact .cta-pill {
@@ -6024,52 +6079,49 @@ a[role="button"] {
 
 @media (max-width: 560px) {
     .showcase-hero {
-        padding-top: 0.7rem;
+        padding-top: 0.9rem;
         padding-bottom: 1.55rem;
     }
 
     .hero-showcase {
-        width: min(100%, 19.25rem);
+        width: min(100%, 20.5rem);
         gap: 1.1rem;
         margin-inline: auto;
         justify-items: center;
     }
 
     .hero-artboard {
-        width: 14rem;
-        min-height: 21rem;
-        margin: 0 auto -1rem;
-        transform: scale(0.79);
-        transform-origin: top center;
+        display: none !important;
     }
 
     .hero-summary-main {
         display: grid;
         justify-items: center;
         width: 100%;
-        max-width: 16.9rem;
+        max-width: 20rem;
         margin-inline: auto;
         text-align: center;
     }
 
     .hero-summary-main h1 {
-        max-width: 6.2ch;
+        max-width: 13ch;
         margin-inline: auto;
-        font-size: clamp(2.12rem, 10vw, 2.95rem);
-        line-height: 0.94;
+        font-size: clamp(2.45rem, 12vw, 3.4rem);
+        line-height: 1;
+        letter-spacing: -0.055em;
     }
 
     .hero-summary-main .hero-text {
-        max-width: 15rem;
-        margin-top: 0.8rem;
-        font-size: 0.83rem;
-        line-height: 1.46;
+        max-width: 17rem;
+        margin-top: 0.9rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
     }
 
     .hero-actions-compact {
         width: 100%;
-        max-width: 15.9rem;
-        margin: 1rem auto 0;
+        max-width: 17rem;
+        margin: 1.1rem auto 0;
         flex-direction: column;
         align-items: stretch;
         gap: 0.72rem;
@@ -6098,13 +6150,85 @@ a[role="button"] {
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 640px) {
+    .showcase-hero .hero-artboard {
+        display: none !important;
+    }
+}
+
+@media (max-width: 640px) {
     .topbar {
-        padding: 0.68rem 0.78rem !important;
+        top: 0.45rem !important;
+        gap: 0.55rem !important;
+        padding: 0.45rem 0.7rem !important;
+        border-radius: 1.15rem !important;
+        box-shadow: 0 16px 38px rgba(13, 12, 10, 0.1) !important;
     }
 
     .logo-image {
-        width: 98px !important;
+        width: 88px !important;
+        height: auto !important;
+    }
+
+    .nav-tools {
+        gap: 0.4rem !important;
+    }
+
+    .mobile-menu-toggle {
+        width: 2.25rem !important;
+        height: 2.25rem !important;
+    }
+
+    .mobile-menu-toggle span {
+        width: 1.25rem !important;
+        height: 1.6px !important;
+    }
+
+    .mobile-menu-toggle span:nth-child(1) {
+        top: 0.6rem !important;
+    }
+
+    .mobile-menu-toggle span:nth-child(2) {
+        top: 1.075rem !important;
+    }
+
+    .mobile-menu-toggle span:nth-child(3) {
+        top: 1.55rem !important;
+    }
+
+    body.nav-open .mobile-menu-toggle span:nth-child(1),
+    body.nav-open .mobile-menu-toggle span:nth-child(3) {
+        top: 1.075rem !important;
+    }
+
+    html {
+        scroll-padding-top: 5.4rem;
+    }
+
+    main section[id],
+    .contact-section {
+        scroll-margin-top: 5.4rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .topbar {
+        padding: 0.38rem 0.6rem !important;
+        gap: 0.45rem !important;
+        border-radius: 1rem !important;
+    }
+
+    .logo-image {
+        width: 78px !important;
+    }
+
+    .mobile-menu-toggle {
+        width: 2.1rem !important;
+        height: 2.1rem !important;
+    }
+
+    .mobile-menu-toggle span {
+        width: 1.1rem !important;
     }
 
     .hero-summary-main {

@@ -947,11 +947,11 @@ $footerSocialLinks = [
 
                         <a
                             class="footer-social footer-social-whatsapp"
-                            href="https://wa.me/255773500811"
+                            href="https://wa.me/255753228505"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="WhatsApp +255 773 500 811"
-                            title="WhatsApp +255 773 500 811"
+                            aria-label="WhatsApp +255 753 228 505"
+                            title="WhatsApp +255 753 228 505"
                         >
                             <img src="images/whatsapp-icon.svg" alt="WhatsApp" class="footer-whatsapp-icon">
                         </a>
@@ -962,9 +962,9 @@ $footerSocialLinks = [
                             <span class="icon-inline"><?= siteIcon('mail') ?></span>
                             <span>info@gisee.co.tz</span>
                         </a>
-                        <a class="footer-contact-item" href="tel:+255773500811">
+                        <a class="footer-contact-item" href="tel:+255 753 228 505">
                             <span class="icon-inline"><?= siteIcon('mobile') ?></span>
-                            <span>+255 773 500 811</span>
+                            <span>+255 753 228 505</span>
                         </a>
                     </div>
 
@@ -975,10 +975,10 @@ $footerSocialLinks = [
 
         <a
             class="whatsapp-bubble"
-            href="https://wa.me/255773500811"
+            href="https://wa.me/255753228505"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Chat with us on WhatsApp at +255 773 500 811"
+            aria-label="Chat with us on WhatsApp at +255 753 228 505"
             title="WhatsApp us"
         >
             <img src="images/whatsapp-icon.svg" alt="WhatsApp chat" class="whatsapp-bubble-icon">

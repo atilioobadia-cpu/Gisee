@@ -75,20 +75,10 @@
                     <span>Get In Touch</span>
                     <span class="contact-pill-badge icon-inline"><x-icon name="arrow" /></span>
                 </button>
-                @guest
-                    <a class="inline-link" href="{{ route('login') }}" data-auth-open="signin">
-                        <span>Log In</span>
-                        <span class="icon-inline"><x-icon name="arrow" /></span>
-                    </a>
-                @else
-                    <form method="POST" action="{{ route('logout') }}" class="inline-link-form">
-                        @csrf
-                        <button class="inline-link" type="submit">
-                            <span>Log Out ({{ Str::of(auth()->user()->name)->before(' ') }})</span>
-                            <span class="icon-inline"><x-icon name="logout" /></span>
-                        </button>
-                    </form>
-                @endguest
+                <a class="inline-link" href="#technologies">
+                    <span>Technologies We Use</span>
+                    <span class="icon-inline"><x-icon name="arrow" /></span>
+                </a>
             </div>
         </div>
 
